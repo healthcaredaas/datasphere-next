@@ -295,4 +295,4 @@ public class SomeService {
 
 ## 许可证
 
-Apache License 2.0
+GNU General Public License v3.0 (GPL-3.0)
