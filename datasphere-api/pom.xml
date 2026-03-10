@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>cn.healthcaredaas</groupId>
+        <artifactId>datasphere-next</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>datasphere-api</artifactId>
+    <name>DataSphere :: API</name>
+    <description>DataSphere API Modules (Dubbo/Feign Interfaces)</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>datasphere-api-common</module>
+        <module>datasphere-api-datasource</module>
+        <module>datasphere-api-integration</module>
+        <module>datasphere-api-master</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.healthcaredaas</groupId>
+                <artifactId>datasphere-api-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.healthcaredaas</groupId>
+                <artifactId>datasphere-api-datasource</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.healthcaredaas</groupId>
+                <artifactId>datasphere-api-integration</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.healthcaredaas</groupId>
+                <artifactId>datasphere-api-master</artifactId>
+                <version>${revision}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>

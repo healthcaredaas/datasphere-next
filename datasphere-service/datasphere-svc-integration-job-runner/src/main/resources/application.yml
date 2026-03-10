@@ -1,0 +1,35 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: datasphere-svc-integration-job-runner
+
+# PowerJob配置
+powerjob:
+  worker:
+    app-name: ${spring.application.name}
+    password: datasphere123
+    server-address: localhost:7700
+    akka-port: 27777
+    store-strategy: disk
+
+# SeaTunnel Zeta引擎配置
+seatunnel:
+  zeta:
+    home: /opt/seatunnel
+    start-script: ${seatunnel.zeta.home}/bin/seatunnel.sh
+    config-dir: ${seatunnel.zeta.home}/config
+    submit-timeout: 60
+    check-interval: 5
+
+spring.cloud:
+  nacos:
+    discovery:
+      server-addr: ${NACOS_SERVER:localhost:8848}
+      namespace: ${NACOS_NAMESPACE:}
+
+logging:
+  level:
+    root: INFO
+    cn.healthcaredaas.datasphere: DEBUG

@@ -1,0 +1,64 @@
+server:
+  port: 8099
+
+spring:
+  application:
+    name: datasphere-db-migration
+    version: @project.version@
+
+  # 数据源配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/datasphere?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root123}
+    hikari:
+      pool-name: MigrationServicePool
+      minimum-idle: 1
+      maximum-pool-size: 5
+      idle-timeout: 60000
+      max-lifetime: 300000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+# Flyway 配置
+spring.flyway:
+  # 启用 Flyway
+  enabled: true
+  # 迁移脚本位置
+  locations: classpath:db/migration
+  # 编码
+  encoding: UTF-8
+  # 基线版本（已有数据库时使用）
+  baseline-on-migrate: true
+  baseline-version: 0
+  # 校验迁移脚本的校验和
+  validate-on-migrate: true
+  # 清理数据库（生产环境必须为 false）
+  clean-disabled: true
+  # 表名前缀
+  table: flyway_schema_history
+  # 占位符配置
+  placeholder-replacement: false
+  # 失败时是否继续
+  out-of-order: false
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    cn.healthcaredaas.datasphere.migration: INFO
+    org.flywaydb: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+
+# 管理端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,flyway
+  endpoint:
+    health:
+      show-details: always

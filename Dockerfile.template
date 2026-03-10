@@ -1,0 +1,18 @@
+FROM eclipse-temurin:17-jdk-alpine
+
+LABEL maintainer="chenpan.ai@qq.com"
+
+WORKDIR /app
+
+# 添加应用jar
+COPY target/*.jar app.jar
+
+# 暴露端口
+EXPOSE 8080
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+    CMD wget -q --spider http://localhost:8080/actuator/health || exit 1
+
+# 启动命令
+ENTRYPOINT ["java", "-jar", "app.jar"]

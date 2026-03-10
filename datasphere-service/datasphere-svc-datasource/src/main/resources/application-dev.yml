@@ -1,0 +1,17 @@
+# 开发环境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/datasphere?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root123
+
+logging:
+  level:
+    root: INFO
+    cn.healthcaredaas.datasphere: DEBUG
+  file:
+    name: logs/datasphere-datasource-dev.log

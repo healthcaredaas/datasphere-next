@@ -1,0 +1,38 @@
+# 测试环境配置
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/datasphere_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root123}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+
+# 测试环境日志
+logging:
+  level:
+    root: WARN
+    cn.healthcaredaas.datasphere: INFO
+    com.baomidou.mybatisplus: WARN
+  file:
+    name: logs/datasphere-quality-test.log
+    max-size: 50MB
+    max-history: 3
+
+# 测试环境Nacos
+nacos:
+  discovery:
+    server-addr: ${NACOS_SERVER:localhost:8848}
+  config:
+    server-addr: ${NACOS_SERVER:localhost:8848}
+
+# 测试环境关闭Swagger
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

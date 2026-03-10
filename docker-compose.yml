@@ -1,0 +1,166 @@
+version: '3.8'
+
+services:
+  # MySQL数据库
+  mysql:
+    image: mysql:8.0
+    container_name: datasphere-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: datasphere
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  # Nacos服务注册中心
+  nacos:
+    image: nacos/nacos-server:v3.0.0
+    container_name: datasphere-nacos
+    environment:
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_DB_NAME: nacos
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: root123
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    depends_on:
+      - mysql
+
+  # Redis缓存
+  redis:
+    image: redis:7-alpine
+    container_name: datasphere-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # 数据源服务
+  svc-datasource:
+    build:
+      context: ./datasphere-service/datasphere-svc-datasource
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-datasource
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 数据集成服务
+  svc-integration:
+    build:
+      context: ./datasphere-service/datasphere-svc-integration
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-integration
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 数据标准服务
+  svc-standard:
+    build:
+      context: ./datasphere-service/datasphere-svc-standard
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-standard
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 主数据服务
+  svc-master:
+    build:
+      context: ./datasphere-service/datasphere-svc-master
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-master
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8084:8084"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 元数据服务
+  svc-metadata:
+    build:
+      context: ./datasphere-service/datasphere-svc-metadata
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-metadata
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8085:8085"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 数据质量服务
+  svc-quality:
+    build:
+      context: ./datasphere-service/datasphere-svc-quality
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-quality
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8086:8086"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 数据资产服务
+  svc-asset:
+    build:
+      context: ./datasphere-service/datasphere-svc-asset
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-asset
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8087:8087"
+    depends_on:
+      - mysql
+      - nacos
+
+  # 数据安全服务
+  svc-security:
+    build:
+      context: ./datasphere-service/datasphere-svc-security
+      dockerfile: Dockerfile
+    container_name: datasphere-svc-security
+    environment:
+      MYSQL_HOST: mysql
+      NACOS_SERVER: nacos:8848
+    ports:
+      - "8088:8088"
+    depends_on:
+      - mysql
+      - nacos
+
+volumes:
+  mysql_data:
+  redis_data:

@@ -1,0 +1,20 @@
+# 生产环境配置
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT:3306}/datasphere?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Shanghai
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 50
+
+logging:
+  level:
+    root: WARN
+    cn.healthcaredaas.datasphere: INFO
+  file:
+    name: /var/log/datasphere/datasphere-datasource.log

@@ -1,0 +1,17 @@
+# 测试环境配置
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/datasphere_test?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root123}
+
+logging:
+  level:
+    root: WARN
+    cn.healthcaredaas.datasphere: INFO
+  file:
+    name: logs/datasphere-datasource-test.log

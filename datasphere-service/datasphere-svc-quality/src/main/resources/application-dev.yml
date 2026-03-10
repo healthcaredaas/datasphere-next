@@ -1,0 +1,42 @@
+# 开发环境配置
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/datasphere?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root123
+    hikari:
+      maximum-pool-size: 10
+
+  # 开发时关闭缓存
+  thymeleaf:
+    cache: false
+
+# 开发环境日志
+logging:
+  level:
+    root: INFO
+    cn.healthcaredaas.datasphere: DEBUG
+    com.baomidou.mybatisplus: DEBUG
+    org.apache.ibatis: DEBUG
+  file:
+    name: logs/datasphere-quality-dev.log
+    max-size: 100MB
+    max-history: 7
+
+# 开发环境Nacos
+nacos:
+  discovery:
+    server-addr: localhost:8848
+  config:
+    server-addr: localhost:8848
+
+# Knife4j开发环境
+knife4j:
+  enable: true
+  setting:
+    enableSwaggerModels: true
+    enableDocumentManage: true
